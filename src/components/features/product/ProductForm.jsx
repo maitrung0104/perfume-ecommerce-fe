@@ -1,15 +1,21 @@
 import { useState } from "react";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { useProducts } from "../../../context/ProductContext";
+import { useNavigate } from "react-router-dom";
 
-export default function ProductForm({ onSubmit, initialData }) {
-  const [name, setName] = useState(initialData?.name || "");
-  const [price, setPrice] = useState(initialData?.price || "");
-  const [description, setDescription] = useState(initialData?.description || "");
+export default function ProductForm() {
+  const { addProduct } = useProducts();
+  const navigate = useNavigate();
+
+  const [name, setName] = useState("");
+  const [price, setPrice] = useState("");
+  const [description, setDescription] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({ name, price, description });
+    addProduct({ name, price: Number(price), description });
+    navigate("/productlist");
   };
 
   return (

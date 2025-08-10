@@ -1,37 +1,15 @@
-import { useEffect, useState } from "react";
-import { api } from "../../services/api";
-import ProductForm from "./ProductForm";
+import { useProducts } from "../../../context/ProductContext";
 
 export default function ProductList() {
-  const [products, setProducts] = useState([]);
-  const [editing, setEditing] = useState(null);
-
-  useEffect(() => {
-    api.getProducts().then(setProducts);
-  }, []);
-
-  const handleSave = (data) => {
-    if (editing) {
-      api.updateProduct(editing.id, data).then(() => {
-        setEditing(null);
-        api.getProducts().then(setProducts);
-      });
-    } else {
-      api.createProduct(data).then(() => {
-        api.getProducts().then(setProducts);
-      });
-    }
-  };
+  const { products, deleteProduct } = useProducts();
 
   return (
     <div>
-      <h2>Quản lý sản phẩm</h2>
-      <ProductForm onSubmit={handleSave} initialData={editing} />
-
-      <table>
+      <h2>Danh sách sản phẩm</h2>
+      <table border="1" cellPadding="10">
         <thead>
           <tr>
-            <th>Tên</th>
+            <th>Tên sản phẩm</th>
             <th>Giá</th>
             <th>Mô tả</th>
             <th>Hành động</th>
@@ -41,13 +19,10 @@ export default function ProductList() {
           {products.map((p) => (
             <tr key={p.id}>
               <td>{p.name}</td>
-              <td>{p.price}</td>
+              <td>{p.price.toLocaleString()} đ</td>
               <td dangerouslySetInnerHTML={{ __html: p.description }} />
               <td>
-                <button onClick={() => setEditing(p)}>Sửa</button>
-                <button onClick={() => api.deleteProduct(p.id).then(() => api.getProducts().then(setProducts))}>
-                  Xóa
-                </button>
+                <button onClick={() => deleteProduct(p.id)}>Xóa</button>
               </td>
             </tr>
           ))}
