@@ -1,20 +1,18 @@
 "use client"
 
- import { useProducts } from "../../../context/ProductContext" // Commented out: Not available in v0 environment
- import { useNavigate } from "react-router-dom" // Commented out: Not available in v0 environment
+import { useProducts } from "../../../context/ProductContext"
+import { useNavigate } from "react-router-dom"
 
 export default function ProductList() {
-   const { products, deleteProduct } = useProducts() // Commented out
-   const navigate = useNavigate() // Commented out
+  const { products, deleteProduct } = useProducts()
+  const navigate = useNavigate()
 
   const handleAddProductClick = () => {
-    // navigate("/productform") // Commented out
-    alert("Chuyển đến trang thêm sản phẩm mới (chức năng này bị comment trong v0).")
+    navigate("/productform")
   }
 
   const handleDeleteProduct = (id) => {
-    // deleteProduct(id) // Commented out
-    alert(`Xóa sản phẩm với ID: ${id} (chức năng này bị comment trong v0).`)
+    deleteProduct(id)
   }
 
   return (
@@ -23,11 +21,12 @@ export default function ProductList() {
         <h2 className="text-2xl font-bold">Danh sách sản phẩm</h2>
         <button
           onClick={handleAddProductClick}
-          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
+          className="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700"
         >
           Thêm sản phẩm mới
         </button>
       </div>
+
       {products.length === 0 ? (
         <p className="text-center text-gray-500 py-8">Chưa có sản phẩm nào. Hãy thêm một sản phẩm!</p>
       ) : (
@@ -35,6 +34,9 @@ export default function ProductList() {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Ảnh
+                </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Tên sản phẩm
                 </th>
@@ -58,9 +60,29 @@ export default function ProductList() {
             <tbody className="bg-white divide-y divide-gray-200">
               {products.map((p) => (
                 <tr key={p.id}>
+                  {/* Ảnh sản phẩm */}
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    {p.images && p.images.length > 0 ? (
+                      <img
+                        src={p.images[0]}
+                        alt={p.name}
+                        className="w-16 h-16 object-cover rounded"
+                      />
+                    ) : (
+                      <span className="text-gray-400">Không có ảnh</span>
+                    )}
+                  </td>
+
+                  {/* Tên */}
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{p.name}</td>
+
+                  {/* Giới tính */}
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 capitalize">{p.gender}</td>
+
+                  {/* Nồng độ */}
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{p.concentration}</td>
+
+                  {/* Biến thể */}
                   <td className="px-6 py-4 text-sm text-gray-500">
                     {p.variants && p.variants.length > 0 ? (
                       <ul className="list-disc list-inside space-y-1">
@@ -74,14 +96,21 @@ export default function ProductList() {
                       <span>N/A</span>
                     )}
                   </td>
+
+                  {/* Mô tả */}
                   <td className="px-6 py-4 text-sm text-gray-500">
                     <div
                       className="prose prose-sm max-w-none overflow-hidden text-ellipsis whitespace-nowrap"
                       dangerouslySetInnerHTML={{ __html: p.description }}
                     />
                   </td>
+
+                  {/* Hành động */}
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <button onClick={() => handleDeleteProduct(p.id)} className="text-red-600 hover:text-red-900 ml-4">
+                    <button
+                      onClick={() => handleDeleteProduct(p.id)}
+                      className="text-red-600 hover:text-red-900 ml-4"
+                    >
                       Xóa
                     </button>
                   </td>

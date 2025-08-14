@@ -18,6 +18,17 @@
   -moz-osx-font-smoothing: grayscale;
   height: 100%; /* Đảm bảo :root chiếm toàn bộ chiều cao */
 }
+.ql-font-sans-serif { font-family: sans-serif; }
+.ql-font-serif { font-family: serif; }
+.ql-font-monospace { font-family: monospace; }
+.ql-font-arial { font-family: Arial, sans-serif; }
+.ql-font-comic-sans { font-family: "Comic Sans MS", cursive, sans-serif; }
+.ql-font-courier-new { font-family: "Courier New", monospace; }
+.ql-font-georgia { font-family: Georgia, serif; }
+.ql-font-helvetica { font-family: Helvetica, sans-serif; }
+.ql-font-lucida { font-family: "Lucida Sans", sans-serif; }
+
+
 
 html, body {
   height: 100%;
