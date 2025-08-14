@@ -1,18 +1,24 @@
 "use client"
 
-import { useProducts } from "../../../context/ProductContext" // Đường dẫn tương đối
-import { useNavigate } from "react-router-dom"
+ import { useProducts } from "../../../context/ProductContext" // Commented out: Not available in v0 environment
+ import { useNavigate } from "react-router-dom" // Commented out: Not available in v0 environment
 
 export default function ProductList() {
-  const { products, deleteProduct } = useProducts()
-  const navigate = useNavigate()
+   const { products, deleteProduct } = useProducts() // Commented out
+   const navigate = useNavigate() // Commented out
 
   const handleAddProductClick = () => {
-    navigate("/productform")
+    // navigate("/productform") // Commented out
+    alert("Chuyển đến trang thêm sản phẩm mới (chức năng này bị comment trong v0).")
+  }
+
+  const handleDeleteProduct = (id) => {
+    // deleteProduct(id) // Commented out
+    alert(`Xóa sản phẩm với ID: ${id} (chức năng này bị comment trong v0).`)
   }
 
   return (
-    <div className="w-full max-w-4xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
+    <div className="w-full max-w-6xl mx-auto mt-8 p-6 bg-white rounded-lg shadow-md">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-2xl font-bold">Danh sách sản phẩm</h2>
         <button
@@ -29,11 +35,17 @@ export default function ProductList() {
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
               <tr>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[150px]">
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Tên sản phẩm
                 </th>
-                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider w-[100px]">
-                  Giá
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Giới tính
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Nồng độ
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Biến thể (Dung tích / Giá / SL)
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Mô tả
@@ -47,7 +59,21 @@ export default function ProductList() {
               {products.map((p) => (
                 <tr key={p.id}>
                   <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{p.name}</td>
-                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{p.price.toLocaleString()} đ</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 capitalize">{p.gender}</td>
+                  <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{p.concentration}</td>
+                  <td className="px-6 py-4 text-sm text-gray-500">
+                    {p.variants && p.variants.length > 0 ? (
+                      <ul className="list-disc list-inside space-y-1">
+                        {p.variants.map((variant) => (
+                          <li key={variant.id}>
+                            {variant.volume} / {variant.price.toLocaleString()} đ / SL: {variant.quantity}
+                          </li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <span>N/A</span>
+                    )}
+                  </td>
                   <td className="px-6 py-4 text-sm text-gray-500">
                     <div
                       className="prose prose-sm max-w-none overflow-hidden text-ellipsis whitespace-nowrap"
@@ -55,7 +81,7 @@ export default function ProductList() {
                     />
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
-                    <button onClick={() => deleteProduct(p.id)} className="text-red-600 hover:text-red-900 ml-4">
+                    <button onClick={() => handleDeleteProduct(p.id)} className="text-red-600 hover:text-red-900 ml-4">
                       Xóa
                     </button>
                   </td>
