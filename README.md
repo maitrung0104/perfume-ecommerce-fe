@@ -17,7 +17,6 @@ Install my-project with npm
 
 ```bash
   npm install
-  cd fe
   npm run dev
 ```
     
